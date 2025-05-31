@@ -1,6 +1,6 @@
 from pydantic import BaseModel, EmailStr
 from datetime import date, time
-from typing import Optional
+from typing import Optional, Literal
 
 
 class UserOut(BaseModel):
@@ -41,4 +41,4 @@ class UserCreate(BaseModel):
 
 class InteractionCreate(BaseModel):
     content_id: int
-    type: str  # "like", "save" lub "share"
+    type: Literal["like", "save", "share"]

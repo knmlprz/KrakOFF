@@ -5,10 +5,28 @@ from .dependencies import get_db, get_current_user
 
 router = APIRouter()
 
+
+def remove_interaction(db: Session, user_id: int, content_id: int, interaction_type: str):
+    interaction = db.query(models.UserInteraction).filter_by(
+        user_id=user_id,
+        content_id=content_id,
+        type=interaction_type
+    ).first()
+
+    if not interaction:
+        raise HTTPException(status_code=404, detail=f"{interaction_type.capitalize()} not found")
+
+    db.delete(interaction)
+    db.commit()
+    return {"message": f"{interaction_type} removed"}
+
+
+# --- LIKE / UNLIKE ---
+
 @router.post("/like")
 def like_content(interaction: schemas.InteractionCreate,
                  db: Session = Depends(get_db),
-                 user = Depends(get_current_user)):
+                 user=Depends(get_current_user)):
     if interaction.type != "like":
         raise HTTPException(status_code=400, detail="Type must be 'like'")
     db_interaction = models.UserInteraction(
@@ -20,10 +38,22 @@ def like_content(interaction: schemas.InteractionCreate,
     db.commit()
     return {"message": "liked"}
 
+
+@router.delete("/unlike")
+def unlike_content(
+    content_id: int,
+    interaction_type: str,
+    db: Session = Depends(get_db),
+    user=Depends(get_current_user)
+):
+    return remove_interaction(db, user.id, content_id, interaction_type)
+
+# --- SAVE / UNSAVE ---
+
 @router.post("/save")
 def save_content(interaction: schemas.InteractionCreate,
                  db: Session = Depends(get_db),
-                 user = Depends(get_current_user)):
+                 user=Depends(get_current_user)):
     if interaction.type != "save":
         raise HTTPException(status_code=400, detail="Type must be 'save'")
     db_interaction = models.UserInteraction(
@@ -35,10 +65,22 @@ def save_content(interaction: schemas.InteractionCreate,
     db.commit()
     return {"message": "saved"}
 
+
+@router.post("/unsave")
+def unsave_content(interaction: schemas.InteractionCreate,
+                   db: Session = Depends(get_db),
+                   user=Depends(get_current_user)):
+    return remove_interaction(db, user.id, interaction.content_id, "save")
+
+
+# --- SHARE / UNSHARE ---
+
 @router.post("/share")
 def share_content(interaction: schemas.InteractionCreate,
                   db: Session = Depends(get_db),
-                  user = Depends(get_current_user)):
+                  user=Depends(get_current_user)):
+    if interaction.type != "share":
+        raise HTTPException(status_code=400, detail="Type must be 'share'")
     db_interaction = models.UserInteraction(
         user_id=user.id,
         content_id=interaction.content_id,
@@ -48,12 +90,23 @@ def share_content(interaction: schemas.InteractionCreate,
     db.commit()
     return {"message": "shared"}
 
+
+@router.post("/unshare")
+def unshare_content(interaction: schemas.InteractionCreate,
+                    db: Session = Depends(get_db),
+                    user=Depends(get_current_user)):
+    return remove_interaction(db, user.id, interaction.content_id, "share")
+
+
+# --- HISTORY & INFO ---
+
 @router.get("/history")
 def interaction_history(db: Session = Depends(get_db),
-                        user = Depends(get_current_user)):
+                        user=Depends(get_current_user)):
     return db.query(models.UserInteraction).filter_by(user_id=user.id).all()
 
-@router.get("/get_info", response_model=schemas.ContentDetail)
+
+@router.get("/get_info", response_model=schemas.ContentOut)
 def get_event_info(content_id: int, db: Session = Depends(get_db)):
     event = db.query(models.Content).filter(models.Content.id == content_id).first()
     if not event:
