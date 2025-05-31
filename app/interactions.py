@@ -40,13 +40,11 @@ def like_content(interaction: schemas.InteractionCreate,
 
 
 @router.delete("/unlike")
-def unlike_content(
-    content_id: int,
-    interaction_type: str,
-    db: Session = Depends(get_db),
-    user=Depends(get_current_user)
-):
-    return remove_interaction(db, user.id, content_id, interaction_type)
+def unlike_content(content_id: int,
+                   db: Session = Depends(get_db),
+                   user=Depends(get_current_user)):
+    return remove_interaction(db, user.id, content_id, "like")
+
 
 # --- SAVE / UNSAVE ---
 
@@ -66,11 +64,11 @@ def save_content(interaction: schemas.InteractionCreate,
     return {"message": "saved"}
 
 
-@router.post("/unsave")
-def unsave_content(interaction: schemas.InteractionCreate,
+@router.delete("/unsave")
+def unsave_content(content_id: int,
                    db: Session = Depends(get_db),
                    user=Depends(get_current_user)):
-    return remove_interaction(db, user.id, interaction.content_id, "save")
+    return remove_interaction(db, user.id, content_id, "save")
 
 
 # --- SHARE / UNSHARE ---
@@ -89,13 +87,6 @@ def share_content(interaction: schemas.InteractionCreate,
     db.add(db_interaction)
     db.commit()
     return {"message": "shared"}
-
-
-@router.post("/unshare")
-def unshare_content(interaction: schemas.InteractionCreate,
-                    db: Session = Depends(get_db),
-                    user=Depends(get_current_user)):
-    return remove_interaction(db, user.id, interaction.content_id, "share")
 
 
 # --- HISTORY & INFO ---

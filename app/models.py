@@ -1,6 +1,7 @@
-from sqlalchemy import Column, Integer, String, ForeignKey, Text, Float, Date, Time
+from sqlalchemy import Column, Integer, String, ForeignKey, Text, Float, Date, Time, Boolean
 from sqlalchemy.orm import relationship
 from .database import Base
+
 
 class User(Base):
     __tablename__ = "users"
@@ -15,23 +16,25 @@ class Content(Base):
     __tablename__ = "content"
 
     id = Column(Integer, primary_key=True, index=True)
-    title = Column(String, nullable=False)
-    short_description = Column(String, nullable=True)
-    long_description = Column(Text, nullable=True)
-    date = Column(Date, nullable=True)  # oddzielna kolumna dla daty
-    time = Column(Time, nullable=True)  # oddzielna kolumna dla czasu
-    location = Column(String, nullable=True)
-    tags = Column(String, nullable=True)  # np. "muzyka,koncert"
-    category = Column(String, nullable=True)
-    price = Column(Float, nullable=True)  # zmieniono z 'ticket_price' na 'price', by pasowało do schemas.py
-    weather = Column(String, nullable=True)
+    tytul = Column(String, nullable=False)
+    typ_wydarzenia = Column(String, nullable=True)
+    data_rozpoczecia = Column(Date, nullable=True)
+    data_zakonczenia = Column(Date, nullable=True)
+    godzina_rozpoczecia = Column(Time, nullable=True)
+    czy_stale = Column(Boolean, default=False)
+    obiekt = Column(String, nullable=True)
+    ulica = Column(String, nullable=True)
+    miasto = Column(String, nullable=True)
+    czy_na_zewnatrz = Column(Boolean, default=False)
+    link_do_tiktoka = Column(String, nullable=True)
+    sciezka_do_tiktoka = Column(String, nullable=True)
+    hashtagi = Column(String, nullable=True)
 
     interactions = relationship("UserInteraction", back_populates="content")
 
 
 class UserInteraction(Base):
     __tablename__ = "interactions"
-
     id = Column(Integer, primary_key=True)
     user_id = Column(Integer, ForeignKey("users.id"))
     content_id = Column(Integer, ForeignKey("content.id"))

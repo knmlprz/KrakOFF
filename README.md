@@ -20,3 +20,4 @@ Build the flutter app in the krakoff directory (flutter directory)
 flutter run
 ```
 
+tytul, typ_wydarzenia, data_rozpoczecia, data_zakonczenia, godzina_rozpoczecia, czy_stałe, obiekt, ulica, miasto, czy_na_zewnatrz, link_do_tiktoka, sciezka_do_tiktoka
