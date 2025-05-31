@@ -8,7 +8,7 @@ import re
 folder = Path('.\\filmiki')  # np. Path('./dane')
 files = [str(p) for p in folder.rglob('*') if p.is_file()]
 
-df = pd.read_csv('wydarzenia_krakow.csv', sep=';')
+df = pd.read_csv('data_to_clean\\wydarzenia_krakow.csv', sep=';')
 
 #df[['data_rozpoczecia', 'data_zakonczenia']] = pd.to_datetime(df[['data_rozpoczecia', 'data_zakonczenia']], errors='coerce').dt.normalize()
 df['czy_na_zewnatrz'] = np.random.randint(0, 2, size=len(df))
