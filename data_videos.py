@@ -5,12 +5,11 @@ from pathlib import Path
 import re
 
 
-folder = Path('.\\filmiki')  # np. Path('./dane')
+folder = Path('.\\filmiki') 
 files = [str(p) for p in folder.rglob('*') if p.is_file()]
 
 df = pd.read_csv('data_to_clean\\wydarzenia_krakow.csv', sep=';')
 
-#df[['data_rozpoczecia', 'data_zakonczenia']] = pd.to_datetime(df[['data_rozpoczecia', 'data_zakonczenia']], errors='coerce').dt.normalize()
 df['czy_na_zewnatrz'] = np.random.randint(0, 2, size=len(df))
 
 
@@ -20,7 +19,6 @@ if len(files) >= len(df):
 else:
     df['sciezka_do_filmiku'] = files + [np.nan] * (len(df) - len(files))
 
-# Podgląd
 print(df[['tytul', 'sciezka_do_filmiku']])
 
 

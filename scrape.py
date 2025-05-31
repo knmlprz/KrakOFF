@@ -35,11 +35,9 @@ CSV_HEADERS = [
 def fetch_page_content(url, is_image=False):
     # print(f"Pobieranie {'obrazka' if is_image else 'strony'}: {url}")
     try:
-        # Dla obrazków ustawiamy stream=True
         response = requests.get(url, headers=HEADERS, timeout=25, verify=False, allow_redirects=True, stream=is_image)
-        # if not is_image: print(f"Status odpowiedzi dla {response.url}: {response.status_code}")
         
-        if not is_image: # Dla stron HTML
+        if not is_image: 
             if response.apparent_encoding:
                 response.encoding = response.apparent_encoding
             else:
@@ -67,26 +65,23 @@ def download_image(image_url, event_id, folder_path):
         return None
 
     try:
-        # Utwórz folder, jeśli nie istnieje
         os.makedirs(folder_path, exist_ok=True)
 
-        # Wyciągnij rozszerzenie pliku z URL
         parsed_url = urlparse(image_url)
         path_parts = os.path.splitext(parsed_url.path)
-        extension = path_parts[1] if path_parts[1] else '.jpg' # Domyślnie .jpg jeśli brak rozszerzenia
+        extension = path_parts[1] if path_parts[1] else '.jpg'
 
         filename = f"{event_id}{extension}"
         filepath = os.path.join(folder_path, filename)
 
         # Sprawdź, czy plik już istnieje, aby uniknąć ponownego pobierania
         if os.path.exists(filepath):
-            # print(f"Obrazek już istnieje: {filepath}")
             return filepath
 
         response = fetch_page_content(image_url, is_image=True)
         if response and response.status_code == 200:
             with open(filepath, 'wb') as f:
-                for chunk in response.iter_content(1024): # Pobieranie w kawałkach
+                for chunk in response.iter_content(1024): 
                     f.write(chunk)
             # print(f"Zapisano obrazek: {filepath}")
             return filepath
@@ -112,10 +107,9 @@ def parse_karnet_pl_event_list(html_content, base_url_for_absolute_paths, curren
         event_link_tag_img = event_container.find('a', class_='event-image')
         event_link_tag_content = event_container.find('a', class_='event-content')
         
-        # Link do obrazka z listy
         image_tag = event_link_tag_img.find('img') if event_link_tag_img else None
         event['link_do_obrazka_lista'] = image_tag['src'] if image_tag and image_tag.has_attr('src') else ""
-        # Upewnij się, że URL obrazka jest absolutny (chociaż na karnet.krakowculture.pl zwykle są)
+
         if event['link_do_obrazka_lista'] and not event['link_do_obrazka_lista'].startswith(('http://', 'https://')):
             event['link_do_obrazka_lista'] = urljoin(base_url_for_absolute_paths, event['link_do_obrazka_lista'])
         
@@ -125,6 +119,7 @@ def parse_karnet_pl_event_list(html_content, base_url_for_absolute_paths, curren
         type_element = content_anchor.find('span', class_='event-type')
         event['typ_wydarzenia_lista'] = type_element.text.strip() if type_element else ""
         location_element = content_anchor.find('p', class_='event-location')
+        
         if location_element:
             icon_span = location_element.find('span', class_='icon-location')
             if icon_span: icon_span.decompose()
