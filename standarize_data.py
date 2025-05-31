@@ -93,4 +93,4 @@ df['hashtagi'] = df1['kategoria'].apply(generuj_hashtagi)
 df['czy_na_zewnatrz'] = np.random.randint(0, 2, size=len(df))
 
 
-df.to_csv('wydarzenia_cleaned.csv', sep = ';')
+df.to_csv('wydarzenia_cleaned.csv', sep = ';', index=False)
