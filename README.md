@@ -14,7 +14,7 @@ poetry run uvicorn app.main:app --reload
 
 
 
-Build the flutter app
+Build the flutter app in the krakoff directory (flutter directory)
 
 ```sh
 flutter run

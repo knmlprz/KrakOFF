@@ -2,30 +2,32 @@ from fastapi import FastAPI
 from .auth import router as auth_router
 from .content import router as content_router
 from .interactions import router as interactions_router
-from .database import engine
+from .database import engine, SessionLocal
 from .models import Base
 from . import models
-from .database import SessionLocal
+from datetime import date, time  # ← poprawka: importujemy date i time
 
 def seed_content_data():
     db = SessionLocal()
-    existing = db.query(models.Content).first()
-    if existing:
-        db.close()
-        return  # Seed już istnieje
-
-    items = [
-        models.Content(title="Jak rozwijać się jako programista", tags="programowanie,motywacja"),
-        models.Content(title="5 sposobów na efektywną naukę", tags="nauka,produktywność"),
-        models.Content(title="Jak budować dobre nawyki", tags="psychologia,rozwój")
-    ]
-    db.add_all(items)
-    db.commit()
+    if not db.query(models.Content).first():
+        sample = models.Content(
+            title="Event testowy",
+            short_description="Opis krótki",
+            long_description="Opis długi i szczegółowy",
+            date=date(2025, 6, 1),
+            time=time(18, 0),
+            location="Kraków",
+            tags="test,kultura",
+            category="konferencja",
+            price=0.0,
+            weather="pochmurno"
+        )
+        db.add(sample)
+        db.commit()
     db.close()
 
-
 Base.metadata.create_all(bind=engine)
-seed_content_data()
+seed_content_data()  # ← nie zapomnij wywołać funkcji
 
 app = FastAPI()
 
