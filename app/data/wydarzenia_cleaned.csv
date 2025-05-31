@@ -1,4 +1,4 @@
-id_strony;tytul;typ_wydarzenia_lista;link_do_obrazka_lista;sciezka_do_pobranego_obrazka;obiekty;ulice;miasta;data_rozpoczecia;data_zakonczenia;godzina_rozpoczecia;czy_stale;hashtagi;czy_na_zewnatrz
+id;tytul;typ_wydarzenia_lista;link_do_obrazka_lista;sciezka_do_pobranego_obrazka;obiekty;ulice;miasta;data_rozpoczecia;data_zakonczenia;godzina_rozpoczecia;czy_stale;hashtagi;czy_na_zewnatrz
 53439;Przygody Tomka Sawyera;Spektakle teatralne;http://media.krakow.travel/photos/69499/m.jpg;obrazy_wydarzen_karnet/53439.jpg;Teatr Bagatela im. Tadeusza Boya-Żeleńskiego;ul. Karmelicka 6;Kraków;2025-06-01;;11:00;;#spektakle #teatralne;1
 56500;MET Opera w Kinie Kijów;Pokazy filmowe;http://media.krakow.travel/photos/69867/m.jpg;obrazy_wydarzen_karnet/56500.jpg;Kino Kijów;al. Krasińskiego 34;Kraków;2025-06-01;;18:55;;#pokazy #filmowe;1
 53439;Przygody Tomka Sawyera;Spektakle teatralne;http://media.krakow.travel/photos/69499/m.jpg;obrazy_wydarzen_karnet/53439.jpg;Teatr Bagatela im. Tadeusza Boya-Żeleńskiego;ul. Karmelicka 6;Kraków;2025-06-01;;11:00;;#spektakle #teatralne;0
