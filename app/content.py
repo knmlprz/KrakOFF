@@ -5,8 +5,7 @@ from typing import List
 from . import models, schemas
 from .dependencies import get_db
 
-from fastapi import UploadFile, File
-import tempfile
+
 
 router = APIRouter()
 

@@ -33,6 +33,26 @@ class ContentOut(BaseModel):
     }
 
 
+class EventOut(BaseModel):
+    id: int
+    tytul: str
+    typ_wydarzenia: Optional[str]
+    data_rozpoczecia: Optional[date]
+    data_zakonczenia: Optional[date]
+    godzina_rozpoczecia: Optional[time]
+    czy_stale: Optional[bool]
+    obiekt: Optional[str]
+    ulica: Optional[str]
+    miasto: Optional[str]
+    czy_na_zewnatrz: Optional[bool]
+    link_do_obrazka: Optional[str]  # Zmienione
+    sciezka_do_obrazka: Optional[str]  # Zmienione
+    hashtagi: Optional[str]
+
+    model_config = {
+        "from_attributes": True
+    }
+
 class ContentDetail(ContentOut):
     pass
 
