@@ -3,7 +3,7 @@ import numpy as np
 import re
 from datetime import datetime
 
-df = pd.read_csv('wydarzenia_karnet_krakow_z_obrazkami_20250530-062133.csv')
+df = pd.read_csv('data_to_clean\\wydarzenia_karnet_krakow_z_obrazkami_20250530-062133.csv')
 
 # LOKALIZACJE
 lok = pd.DataFrame()
@@ -93,4 +93,4 @@ df['hashtagi'] = df1['kategoria'].apply(generuj_hashtagi)
 df['czy_na_zewnatrz'] = np.random.randint(0, 2, size=len(df))
 
 
-df.to_csv('wydarzenia_cleaned.csv', sep = ';', index=False)
+df.to_csv('data\\wydarzenia_cleaned.csv', sep = ';', index=False)

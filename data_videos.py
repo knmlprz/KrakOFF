@@ -50,4 +50,4 @@ df1 = pd.DataFrame({'kategoria': kategorie})
 
 df['hashtagi'] = df1['kategoria'].apply(generuj_hashtagi)
 
-df.to_csv('events_tiktak.csv', sep =';', index=False)
+df.to_csv('data\\events_tiktak.csv', sep =';', index=False)
